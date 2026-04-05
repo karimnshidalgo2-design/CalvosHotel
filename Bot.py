@@ -8,7 +8,7 @@ intents = discord.Intents.default()
 intents.message_content = True
 intents.members = True
 
-bot = commands.Bot(command_prefix="!", intents=intents)
+bot = commands.Bot(command_prefix="!", intents=intents, help_command=None)
 
 DATA_FILE = "libros.json"
 
@@ -188,6 +188,65 @@ async def tareas(ctx, *args):
     mensaje += "\n📸 Suban evidencia cuando terminen"
 
     await ctx.send(mensaje)
+
+
+# =========================
+# AYUDA
+# =========================
+
+@bot.command(name="help")
+async def ayuda(ctx):
+    await ctx.message.delete()
+
+    embed = discord.Embed(
+        title="📚 Comandos del Bot — CalvosHotel",
+        description="Aquí tienes una guía rápida de todos los comandos disponibles.",
+        color=discord.Color.gold()
+    )
+
+    embed.add_field(
+        name="📖  `!crear_libros tipo1 tipo2 tipo3...`",
+        value=(
+            "Crea el panel de libros con los tipos indicados.\n"
+            "Cada tipo tendrá **5 niveles** en 🔴 (pendiente) por defecto.\n"
+            "**Ejemplo:** `!crear_libros fuego agua tierra`"
+        ),
+        inline=False
+    )
+
+    embed.add_field(
+        name="🟢  `!set tipo nivel`",
+        value=(
+            "Marca un nivel de un libro como **completado** (🟢).\n"
+            "El nivel debe ser un número del **1 al 5**.\n"
+            "**Ejemplo:** `!set fuego 3`"
+        ),
+        inline=False
+    )
+
+    embed.add_field(
+        name="🔴  `!quitar tipo nivel`",
+        value=(
+            "Marca un nivel de un libro como **pendiente** (🔴).\n"
+            "El nivel debe ser un número del **1 al 5**.\n"
+            "**Ejemplo:** `!quitar agua 2`"
+        ),
+        inline=False
+    )
+
+    embed.add_field(
+        name="📋  `!tareas nombre:cantidad nombre:cantidad...`",
+        value=(
+            "Asigna tareas aleatoriamente a los miembros con rol **Calvos**.\n"
+            "Cada argumento sigue el formato `nombre:cantidad`.\n"
+            "**Ejemplo:** `!tareas minar:64 talar:32 pescar:16`"
+        ),
+        inline=False
+    )
+
+    embed.set_footer(text="CalvosHotel Bot • Escribe el comando exactamente como se muestra")
+
+    await ctx.send(embed=embed)
 
 
 # =========================
