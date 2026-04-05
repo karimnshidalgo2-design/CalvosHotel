@@ -196,7 +196,7 @@ async def tareas(ctx, *args):
 @bot.command()
 async def ya(ctx):
     await ctx.message.delete()
-    await ctx.send(f"✅ {ctx.author.mention} terminó su tarea!")
+    await ctx.send("Ya chepe")
 
 
 # =========================
@@ -206,7 +206,7 @@ async def ya(ctx):
 @bot.command()
 async def chupalo(ctx):
     await ctx.message.delete()
-    await ctx.send(f"🍆 {ctx.author.mention} dijo: CHUPALO")
+    await ctx.send("Chupalo crazy")
 
 
 # =========================
