@@ -44,6 +44,7 @@ def cargar_datos():
 @bot.event
 async def on_ready():
     cargar_datos()
+    await bot.change_presence(status=discord.Status.online, activity=discord.Game(name="!tareas"))
     print(f"Bot conectado como {bot.user}")
 
 
