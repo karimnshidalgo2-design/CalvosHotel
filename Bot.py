@@ -203,7 +203,7 @@ async def chupalo(ctx):
     await ctx.send("Chupalo crazy")
 
 @bot.command()
-async def Mamelo(ctx):
+async def mamelo(ctx):
     await ctx.send("Mamelo")
 
 # =========================
