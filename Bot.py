@@ -188,27 +188,16 @@ async def tareas(ctx, *args):
     mensaje += "\n📸 Suban evidencia cuando terminen"
 
     await ctx.send(mensaje)
-
-# =========================
-# YA
-# =========================
-
+    
 @bot.command()
 async def ya(ctx):
-    await ctx.message.delete()
     await ctx.send("Ya chepe")
 
 
-# =========================
-# CHUPALO
-# =========================
-
 @bot.command()
 async def chupalo(ctx):
-    await ctx.message.delete()
-    await ctx.send("Chupalo crazy")
-
-
+    await ctx.send("chupalo crazy")
+    
 # =========================
 # TOKEN
 # =========================
