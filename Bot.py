@@ -191,13 +191,15 @@ async def tareas(ctx, *args):
     
 @bot.command()
 async def ya(ctx):
+    await ctx.message.delete()
     await ctx.send("Ya chepe")
 
 
 @bot.command()
 async def chupalo(ctx):
-    await ctx.send("chupalo crazy")
-    
+    await ctx.message.delete()
+    await ctx.send("Chupalo crazy")
+
 # =========================
 # TOKEN
 # =========================
