@@ -200,8 +200,12 @@ async def ya(ctx):
 
 @bot.command()
 async def chupalo(ctx):
-    await ctx.send("chupalo crazy")
-    
+    await ctx.send("Chupalo crazy")
+
+@bot.command()
+async def Mamelo(ctx):
+    await ctx.send("Mamelo")
+
 # =========================
 # TOKEN
 # =========================
