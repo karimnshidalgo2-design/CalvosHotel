@@ -196,7 +196,7 @@ async def ya(ctx):
 
 @bot.command()
 async def chupalo(ctx):
-    await ctx.send("chupalo crazy")
+    await ctx.send("Chupalo crazy")
     
 # =========================
 # TOKEN
