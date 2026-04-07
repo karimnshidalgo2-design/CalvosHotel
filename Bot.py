@@ -270,6 +270,10 @@ async def sunny(ctx):
 async def henry(ctx):
     await ctx.send("Que onda muchachos")
 
+@bot.command()
+async def gigi(ctx):
+    await ctx.send("habemus gigi")
+
 # =========================
 # TOKEN
 # =========================
