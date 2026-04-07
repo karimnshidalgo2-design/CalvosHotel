@@ -121,14 +121,23 @@ async def set(ctx, tipo, nivel: int):
     actualizar_libro(tipo, nivel, True)
 
     libros_estado = obtener_libros()
+    niveles = libros_estado[tipo]
+    linea = " | ".join(["🟢" if e else "🔴" for e in niveles])
+    nuevo_bloque = f"**{tipo.upper()}**\n{linea}"
 
-    mensaje = ""
+    async for msg in ctx.channel.history(limit=20):
+        if msg.author == bot.user and f"**{tipo.upper()}**" in msg.content:
+            contenido = msg.content
+            lineas = contenido.split("\n")
+            for i, l in enumerate(lineas):
+                if l.strip() == f"**{tipo.upper()}**":
+                    if i + 1 < len(lineas):
+                        lineas[i + 1] = linea
+                    break
+            await msg.edit(content="\n".join(lineas))
+            return
 
-    for t, niveles in libros_estado.items():
-        linea = " | ".join(["🟢" if e else "🔴" for e in niveles])
-        mensaje += f"**{t.upper()}**\n{linea}\n\n"
-
-    await ctx.send(mensaje)
+    await ctx.send(nuevo_bloque)
 
 # =========================
 # QUITAR
@@ -153,14 +162,23 @@ async def quitar(ctx, tipo, nivel: int):
     actualizar_libro(tipo, nivel, False)
 
     libros_estado = obtener_libros()
+    niveles = libros_estado[tipo]
+    linea = " | ".join(["🟢" if e else "🔴" for e in niveles])
+    nuevo_bloque = f"**{tipo.upper()}**\n{linea}"
 
-    mensaje = ""
+    async for msg in ctx.channel.history(limit=20):
+        if msg.author == bot.user and f"**{tipo.upper()}**" in msg.content:
+            contenido = msg.content
+            lineas = contenido.split("\n")
+            for i, l in enumerate(lineas):
+                if l.strip() == f"**{tipo.upper()}**":
+                    if i + 1 < len(lineas):
+                        lineas[i + 1] = linea
+                    break
+            await msg.edit(content="\n".join(lineas))
+            return
 
-    for t, niveles in libros_estado.items():
-        linea = " | ".join(["🟢" if e else "🔴" for e in niveles])
-        mensaje += f"**{t.upper()}**\n{linea}\n\n"
-
-    await ctx.send(mensaje)
+    await ctx.send(nuevo_bloque)
 
 # =========================
 # TAREAS
