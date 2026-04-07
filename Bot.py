@@ -118,6 +118,7 @@ async def set(ctx, tipo, nivel: int):
     await ctx.message.delete()
 
     tipo = tipo.lower()
+
     libros_estado = obtener_libros()
 
     if tipo not in libros_estado:
@@ -128,14 +129,18 @@ async def set(ctx, tipo, nivel: int):
         await ctx.send("Nivel inválido")
         return
 
+    # actualizar DB
     actualizar_libro(tipo, nivel, True)
+
+    # volver a leer DB
     libros_estado = obtener_libros()
 
+    # obtener mensaje guardado
     cursor.execute("SELECT mensaje_id FROM mensajes WHERE canal_id=?", (ctx.channel.id,))
     data = cursor.fetchone()
 
     if not data:
-        await ctx.send("No hay lista creada. Usa !crear_libros")
+        await ctx.send("Usa !crear_libros primero")
         return
 
     mensaje_id = data[0]
@@ -143,28 +148,29 @@ async def set(ctx, tipo, nivel: int):
     try:
         msg = await ctx.channel.fetch_message(mensaje_id)
     except:
-        await ctx.send("El mensaje original no existe. Usa !crear_libros otra vez")
+        await ctx.send("No encontré el mensaje. Usa !crear_libros otra vez")
         return
 
-    contenido = msg.content.split("\n")
+    # 🔥 reconstruir TODO el mensaje
+    nuevo_mensaje = ""
 
-    for i, linea in enumerate(contenido):
-        if linea.strip() == f"**{tipo.upper()}**":
-            nueva_linea = " | ".join(["🟢" if e else "🔴" for e in libros_estado[tipo]])
-            contenido[i + 1] = nueva_linea
-            break
+    for t, niveles in libros_estado.items():
+        linea = " | ".join(["🟢" if e else "🔴" for e in niveles])
+        nuevo_mensaje += f"**{t.upper()}**\n{linea}\n\n"
 
-    await msg.edit(content="\n".join(contenido))
+    # 🔥 editar SIEMPRE el mismo mensaje
+    await msg.edit(content=nuevo_mensaje)
 
 # =========================
 # QUITAR
 # =========================
 
 @bot.command()
-async def quitar(ctx, tipo, nivel: int):
+async def set(ctx, tipo, nivel: int):
     await ctx.message.delete()
 
     tipo = tipo.lower()
+
     libros_estado = obtener_libros()
 
     if tipo not in libros_estado:
@@ -175,28 +181,37 @@ async def quitar(ctx, tipo, nivel: int):
         await ctx.send("Nivel inválido")
         return
 
+    # actualizar DB
     actualizar_libro(tipo, nivel, False)
+
+    # volver a leer DB
     libros_estado = obtener_libros()
 
+    # obtener mensaje guardado
     cursor.execute("SELECT mensaje_id FROM mensajes WHERE canal_id=?", (ctx.channel.id,))
     data = cursor.fetchone()
 
     if not data:
-        await ctx.send("Primero usa !crear_libros")
+        await ctx.send("Usa !crear_libros primero")
         return
 
     mensaje_id = data[0]
-    msg = await ctx.channel.fetch_message(mensaje_id)
 
-    contenido = msg.content.split("\n")
+    try:
+        msg = await ctx.channel.fetch_message(mensaje_id)
+    except:
+        await ctx.send("No encontré el mensaje. Usa !crear_libros otra vez")
+        return
 
-    for i, linea in enumerate(contenido):
-        if linea.strip() == f"**{tipo.upper()}**":
-            nueva_linea = " | ".join(["🟢" if e else "🔴" for e in libros_estado[tipo]])
-            contenido[i + 1] = nueva_linea
-            break
+    # 🔥 reconstruir TODO el mensaje
+    nuevo_mensaje = ""
 
-    await msg.edit(content="\n".join(contenido))
+    for t, niveles in libros_estado.items():
+        linea = " | ".join(["🟢" if e else "🔴" for e in niveles])
+        nuevo_mensaje += f"**{t.upper()}**\n{linea}\n\n"
+
+    # 🔥 editar SIEMPRE el mismo mensaje
+    await msg.edit(content=nuevo_mensaje)
 
 # =========================
 # TAREAS
