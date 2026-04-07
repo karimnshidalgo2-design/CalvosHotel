@@ -135,11 +135,16 @@ async def set(ctx, tipo, nivel: int):
     data = cursor.fetchone()
 
     if not data:
-        await ctx.send("Primero usa !crear_libros")
+        await ctx.send("No hay lista creada. Usa !crear_libros")
         return
 
     mensaje_id = data[0]
-    msg = await ctx.channel.fetch_message(mensaje_id)
+
+    try:
+        msg = await ctx.channel.fetch_message(mensaje_id)
+    except:
+        await ctx.send("El mensaje original no existe. Usa !crear_libros otra vez")
+        return
 
     contenido = msg.content.split("\n")
 
