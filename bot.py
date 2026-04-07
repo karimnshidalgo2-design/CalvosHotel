@@ -32,14 +32,17 @@ conn.commit()
 # =========================
 
 def crear_libros_db(tipos):
-    cursor.execute("DELETE FROM libros")
-
     for tipo in tipos:
         for nivel in range(1, 6):
             cursor.execute(
-                "INSERT INTO libros (tipo, nivel, estado) VALUES (?, ?, ?)",
-                (tipo.lower(), nivel, 0)
+                "SELECT 1 FROM libros WHERE tipo=? AND nivel=?",
+                (tipo.lower(), nivel)
             )
+            if cursor.fetchone() is None:
+                cursor.execute(
+                    "INSERT INTO libros (tipo, nivel, estado) VALUES (?, ?, ?)",
+                    (tipo.lower(), nivel, 0)
+                )
 
     conn.commit()
 
