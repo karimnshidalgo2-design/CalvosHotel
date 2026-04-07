@@ -195,16 +195,28 @@ async def tareas(ctx, *args):
 
 @bot.command()
 async def ya(ctx):
-    await ctx.send("Ya chepe")
+    await ctx.send("Ya Chepe")
 
 
 @bot.command()
 async def chupalo(ctx):
-    await ctx.send("Chupalo crazy")
+    await ctx.send("Chupalo Crazy")
 
 @bot.command()
 async def mamelo(ctx):
     await ctx.send("Mamelo")
+
+@bot.command()
+async def sunny(ctx):
+    await ctx.send("Es lo mismo")
+
+@bot.command()
+async def henry(ctx):
+    await ctx.send("que onda muchachos")
+
+@bot.command()
+async def fran(ctx):
+    await ctx.send("Soy gei y no tiene nada de malo")
 
 # =========================
 # TOKEN
