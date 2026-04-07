@@ -89,9 +89,12 @@ async def crear_libros(ctx, *tipos):
 
     mensaje = ""
 
-    for tipo, niveles in libros_estado.items():
-        linea = " | ".join(["🟢" if e else "🔴" for e in niveles])
-        mensaje += f"**{tipo.upper()}**\n{linea}\n\n"
+    for tipo in tipos:
+        tipo_lower = tipo.lower()
+        if tipo_lower in libros_estado:
+            niveles = libros_estado[tipo_lower]
+            linea = " | ".join(["🟢" if e else "🔴" for e in niveles])
+            mensaje += f"**{tipo_lower.upper()}**\n{linea}\n\n"
 
     await ctx.send(mensaje)
 
