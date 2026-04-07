@@ -1,6 +1,3 @@
-import os
-if os.path.exists("libros.db"):
-    os.remove("libros.db")
 import discord
 from discord.ext import commands
 import random
