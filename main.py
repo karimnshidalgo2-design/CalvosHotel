@@ -166,7 +166,7 @@ async def set(ctx, tipo, nivel: int):
 # =========================
 
 @bot.command()
-async def set(ctx, tipo, nivel: int):
+async def quitar(ctx, tipo, nivel: int):
     await ctx.message.delete()
 
     tipo = tipo.lower()
