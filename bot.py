@@ -14,7 +14,7 @@ bot = commands.Bot(command_prefix="!", intents=intents)
 # BASE DE DATOS
 # =========================
 
-conn = sqlite3.connect("libros.db")
+conn = sqlite3.connect("/app/libros.db")
 cursor = conn.cursor()
 
 cursor.execute("""
