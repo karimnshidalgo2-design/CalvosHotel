@@ -245,6 +245,58 @@ async def tareas(ctx, *args):
     await ctx.send(mensaje)
 
 # =========================
+# Reinciar el bot
+# =========================
+
+@bot.command()
+async def reiniciar(ctx):
+    await ctx.message.delete()
+
+    # 🔒 verificar rol Supremo
+    if not any(role.name == "Supremo" for role in ctx.author.roles):
+        return
+
+    # 🔥 poner TODO en rojo
+    cursor.execute("UPDATE libros SET estado = 0")
+    conn.commit()
+
+    # 🔥 obtener todas las listas
+    cursor.execute("SELECT lista_id FROM mensajes WHERE canal_id=?", (ctx.channel.id,))
+    listas = cursor.fetchall()
+
+    for (lista_id,) in listas:
+
+        # reconstruir cada lista
+        cursor.execute("""
+        SELECT tipo, nivel, estado FROM libros WHERE lista_id=?
+        """, (lista_id,))
+        data = cursor.fetchall()
+
+        libros = {}
+        for tipo, nivel, estado in data:
+            if tipo not in libros:
+                libros[tipo] = [False]*5
+            libros[tipo][nivel-1] = bool(estado)
+
+        mensaje = ""
+        for t, niveles in libros.items():
+            linea = " | ".join(["🟢" if e else "🔴" for e in niveles])
+            mensaje += f"**{t.upper()}**\n{linea}\n\n"
+
+        # editar mensaje correspondiente
+        cursor.execute("""
+        SELECT mensaje_id FROM mensajes WHERE lista_id=? AND canal_id=?
+        """, (lista_id, ctx.channel.id))
+        msg_id = cursor.fetchone()[0]
+
+        try:
+            msg = await ctx.channel.fetch_message(msg_id)
+            await msg.edit(content=mensaje)
+        except:
+            pass
+
+
+# =========================
 # RANDOM
 # =========================
 
